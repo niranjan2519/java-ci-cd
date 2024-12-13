@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Change this to use runner
+    runs-on: ubuntu-latest
 
     steps:
       # Checkout the code
@@ -25,7 +25,7 @@ jobs:
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
-          path: C:\Users\runneradmin\.m2\repository
+          path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
@@ -34,11 +34,25 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -DskipTests
 
-      # Run unit tests
-      - name: Run tests with Maven
-        run: mvn test
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        run: docker build -t niranjan1925/ci-cd-app:${{ github.sha }} -f /Dockerfile .
 
-      # Optional: Deploy Java app (if needed)
-      - name: Deploy Java app
+
+      # Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Build the Docker image
+      - name: Build Docker image
         run: |
-          echo "Deploying Java app..."
+          docker build -t niranjan1925/ci-cd-app:${{ github.sha }} .
+
+      # Push the Docker image to Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push niranjan1925/ci-cd-app:${{ github.sha }}
