@@ -10,6 +10,8 @@ CMD ls target/App-1.0-SNAPSHOT.jar
 # Copy the JAR file from the Maven target directory
 COPY actions-ci-cd/target/App-1.0-SNAPSHOT.jar ./
 
+CMD ls target/App-1.0-SNAPSHOT.jar
+
 EXPOSE 8080
 
 # Run the JAR file
