@@ -5,7 +5,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the JAR file from the Maven target directory
-COPY App-1.0-SNAPSHOT.jar app/App-1.0-SNAPSHOT.jar
+COPY target/App-1.0-SNAPSHOT.jar App-1.0-SNAPSHOT.jar
 
 # Expose the application port
 EXPOSE 8080
