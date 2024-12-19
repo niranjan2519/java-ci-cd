@@ -54,8 +54,7 @@ jobs:
         run: |
           docker build -t niranjan1925/ci-cd-app:${{ github.sha }} .
           docker push niranjan1925/ci-cd-app:${{ github.sha }}
-    
-    steps:
+
       - name: Send Email Notification
         run: |
           echo -e "Subject: 🚨 CI Build Failed\n\nBuild failed for commit ${{ github.sha }}. See details at https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" | \
