@@ -55,13 +55,13 @@ jobs:
           docker build -t niranjan1925/ci-cd-app:${{ github.sha }} .
           docker push niranjan1925/ci-cd-app:${{ github.sha }}
     
-          steps:
-            - name: Send Email Notification
-              run: |
-                echo -e "Subject: 🚨 CI Build Failed\n\nBuild failed for commit ${{ github.sha }}. See details at https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" | \
-                curl --url 'smtps://smtp.gmail.com:465' \
-                  --ssl-reqd \
-                  --mail-from "${{ secrets.GMAIL_USERNAME }}" \
-                  --mail-rcpt "asniranjan4419@gmail.com" \
-                  --upload-file - \
-                  --user "${{ secrets.GMAIL_USERNAME }}:${{ secrets.GMAIL_PASSWORD }}"
+    steps:
+      - name: Send Email Notification
+        run: |
+          echo -e "Subject: 🚨 CI Build Failed\n\nBuild failed for commit ${{ github.sha }}. See details at https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" | \
+          curl --url 'smtps://smtp.gmail.com:465' \
+          --ssl-reqd \
+          --mail-from "${{ secrets.GMAIL_USERNAME }}" \
+          --mail-rcpt "asniranjan4419@gmail.com" \
+          --upload-file - \
+          --user "${{ secrets.GMAIL_USERNAME }}:${{ secrets.GMAIL_PASSWORD }}"
